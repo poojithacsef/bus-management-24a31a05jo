@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Bus Markers Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+        .controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .controls h2 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .status {
+            padding: 10px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .bus-list {
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .bus-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: #f8fafc;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bus-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <h2>🚌 Bus Tracker</h2>
+        <div class="status" id="status">Initializing...</div>
+        <div class="bus-list" id="bus-list"></div>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        let map;
+        const markers = [];
+        const routes = [];
+        
+        // Pragati Engineering College location
+        const college = { 
+            lat: 17.0200, 
+            lng: 82.2280,
+            name: 'Pragati Engineering College, Surampalem'
+        };
+        
+        // Bus data with actual locations around the college
+        const buses = [
+            { id: 1, name: 'Rajahmundry', lat: 17.0005, lng: 81.8040, color: '#667eea', driver: 'Ramesh Babu' },
+            { id: 3, name: 'Kakinada', lat: 16.9891, lng: 82.2711, color: '#dc2626', driver: 'Srinivas Reddy' },
+            { id: 4, name: 'Pithapuram', lat: 17.1167, lng: 82.2500, color: '#16a34a', driver: 'Venkata Rao' },
+            { id: 8, name: 'Peddapuram', lat: 17.0833, lng: 82.1333, color: '#fbbf24', driver: 'Prasad Raju' },
+            { id: 90, name: 'Samalkot', lat: 17.0500, lng: 82.1667, color: '#8b5cf6', driver: 'Kiran Kumar' },
+            { id: 12, name: 'Amalapuram', lat: 16.5833, lng: 82.0167, color: '#f59e0b', driver: 'Suresh Babu' },
+            { id: 15, name: 'Mandapeta', lat: 16.8667, lng: 81.9333, color: '#06b6d4', driver: 'Ravi Teja' },
+            { id: 22, name: 'Tuni', lat: 17.3500, lng: 82.5500, color: '#ef4444', driver: 'Mahesh Kumar' },
+            { id: 25, name: 'Yanam', lat: 16.7333, lng: 82.2167, color: '#10b981', driver: 'Naresh Reddy' },
+            { id: 30, name: 'Ramachandrapuram', lat: 16.8333, lng: 82.3000, color: '#f97316', driver: 'Vijay Krishna' },
+            { id: 35, name: 'Kotananduru', lat: 16.7833, lng: 81.8833, color: '#ec4899', driver: 'Srinivas Rao' },
+            { id: 40, name: 'Uppada', lat: 17.0833, lng: 82.3500, color: '#14b8a6', driver: 'Rajesh Kumar' }
+        ];
+
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+            console.log(message);
+        }
+
+        function updateBusList() {
+            const listHtml = buses.map(bus => `
+                <div class="bus-item">
+                    <div class="bus-color" style="background: ${bus.color}"></div>
+                    <div>
+                        <strong>Bus ${bus.id}</strong> - ${bus.name}<br>
+                        <small>${bus.driver}</small>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('bus-list').innerHTML = listHtml;
+        }
+
+        function initMap() {
+            updateStatus('Creating map...');
+            
+            // Create map centered on college
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 9,
+                center: college,
+                mapTypeId: 'roadmap',
+                styles: [
+                    {
+                        featureType: 'water',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#dbeafe' }]
+                    }
+                ]
+            });
+
+            updateStatus('Map created! Adding college marker...');
+
+            // Add college marker (large yellow marker)
+            const collegeMarker = new google.maps.Marker({
+                position: college,
+                map: map,
+                title: college.name,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 20,
+                    fillColor: '#fbbf24',
+                    fillOpacity: 1,
+                    strokeColor: '#ffffff',
+                    strokeWeight: 4
+                },
+                label: {
+                    text: '🏫',
+                    fontSize: '24px'
+                },
+                zIndex: 1000
+            });
+
+            updateStatus('College marker added! Adding buses...');
+
+            // Add bus markers and routes
+            let addedCount = 0;
+            buses.forEach((bus, index) => {
+                setTimeout(() => {
+                    // Create bus marker
+                    const busMarker = new google.maps.Marker({
+                        position: { lat: bus.lat, lng: bus.lng },
+                        map: map,
+                        title: `Bus ${bus.id} - ${bus.name}`,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 14,
+                            fillColor: bus.color,
+                            fillOpacity: 1,
+                            strokeColor: '#ffffff',
+                            strokeWeight: 3
+                        },
+                        label: {
+                            text: bus.id.toString(),
+                            color: '#ffffff',
+                            fontSize: '13px',
+                            fontWeight: 'bold'
+                        },
+                        animation: google.maps.Animation.DROP,
+                        zIndex: 100
+                    });
+
+                    // Create route line
+                    const routeLine = new google.maps.Polyline({
+                        path: [
+                            { lat: bus.lat, lng: bus.lng },
+                            college
+                        ],
+                        geodesic: true,
+                        strokeColor: bus.color,
+                        strokeOpacity: 0.7,
+                        strokeWeight: 4,
+                        map: map
+                    });
+
+                    // Add info window
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `
+                            <div style="padding: 10px; font-family: Arial;">
+                                <h3 style="margin: 0 0 8px 0; color: ${bus.color};">Bus ${bus.id}</h3>
+                                <p style="margin: 4px 0;"><strong>Route:</strong> ${bus.name} → Surampalem</p>
+                                <p style="margin: 4px 0;"><strong>Driver:</strong> ${bus.driver}</p>
+                            </div>
+                        `
+                    });
+
+                    busMarker.addListener('click', () => {
+                        infoWindow.open(map, busMarker);
+                    });
+
+                    markers.push(busMarker);
+                    routes.push(routeLine);
+                    
+                    addedCount++;
+                    updateStatus(`Added ${addedCount}/${buses.length} buses`);
+                    
+                    if (addedCount === buses.length) {
+                        updateStatus(`✅ All ${buses.length} buses loaded!`);
+                        
+                        // Fit map to show all markers
+                        const bounds = new google.maps.LatLngBounds();
+                        bounds.extend(college);
+                        buses.forEach(bus => {
+                            bounds.extend({ lat: bus.lat, lng: bus.lng });
+                        });
+                        map.fitBounds(bounds);
+                    }
+                }, index * 200); // Stagger marker drops
+            });
+
+            updateBusList();
+        }
+
+        window.initMap = initMap;
+    </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD735BzVTgQt6ois82KJbv0ZyJvWE_jykg&callback=initMap">
+    </script>
+</body>
+</html>

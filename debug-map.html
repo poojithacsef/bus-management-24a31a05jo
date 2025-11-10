@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Bus Markers</title>
+    <style>
+        #map { height: 100vh; width: 100%; }
+        #debug {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 300px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="debug">
+        <strong>Debug Log:</strong><br>
+        <div id="log"></div>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        function log(msg) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += msg + '<br>';
+            console.log(msg);
+        }
+
+        const collegeLocation = { lat: 17.083056007230727, lng: 82.05445438182011 };
+        
+        const buses = [
+            { id: 1, name: 'Rajahmundry', lat: 17.0005, lng: 81.8040, color: '#667eea' },
+            { id: 3, name: 'Kakinada', lat: 16.9891, lng: 82.2711, color: '#dc2626' },
+            { id: 4, name: 'Peddapuram', lat: 17.1167, lng: 82.2500, color: '#16a34a' }
+        ];
+
+        function initMap() {
+            log('START: initMap called');
+            log(`Buses array length: ${buses.length}`);
+            
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 9,
+                center: collegeLocation,
+                mapTypeId: 'roadmap'
+            });
+            
+            log('Map object created');
+            log(`Map center: ${map.getCenter()}`);
+
+            // College marker
+            const collegeMarker = new google.maps.Marker({
+                position: collegeLocation,
+                map: map,
+                title: 'College',
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 15,
+                    fillColor: '#fbbf24',
+                    fillOpacity: 1,
+                    strokeColor: '#ffffff',
+                    strokeWeight: 3
+                }
+            });
+            
+            log('✓ College marker created');
+
+            // Add bus markers
+            buses.forEach((bus, i) => {
+                log(`Creating bus ${bus.id} at (${bus.lat}, ${bus.lng})`);
+                
+                const marker = new google.maps.Marker({
+                    position: { lat: bus.lat, lng: bus.lng },
+                    map: map,
+                    title: `Bus ${bus.id}`,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: bus.color,
+                        fillOpacity: 1,
+                        strokeColor: '#ffffff',
+                        strokeWeight: 2
+                    },
+                    label: {
+                        text: bus.id.toString(),
+                        color: '#ffffff',
+                        fontSize: '11px',
+                        fontWeight: 'bold'
+                    }
+                });
+                
+                log(`✓ Bus ${bus.id} marker created`);
+                
+                // Route line
+                const line = new google.maps.Polyline({
+                    path: [
+                        { lat: bus.lat, lng: bus.lng },
+                        collegeLocation
+                    ],
+                    geodesic: true,
+                    strokeColor: bus.color,
+                    strokeOpacity: 0.7,
+                    strokeWeight: 3,
+                    map: map
+                });
+                
+                log(`✓ Bus ${bus.id} route line created`);
+            });
+
+            log('COMPLETE: All markers added!');
+        }
+
+        window.initMap = initMap;
+    </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD735BzVTgQt6ois82KJbv0ZyJvWE_jykg&callback=initMap">
+    </script>
+</body>
+</html>

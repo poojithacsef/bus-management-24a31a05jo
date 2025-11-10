@@ -1,0 +1,346 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #fef3c7 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease;
+}
+
+.login-card:hover {
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo Section */
+.logo-section {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.logo-circle {
+    width: 100px;
+    height: 100px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+    padding: 8px;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+    }
+}
+
+.login-logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.logo-circle i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.app-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.25rem;
+}
+
+.app-subtitle {
+    font-size: 0.95rem;
+    color: #64748b;
+    font-weight: 400;
+}
+
+/* Login Form */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1.25rem;
+    color: #94a3b8;
+    font-size: 1rem;
+    z-index: 2;
+}
+
+.login-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.login-input:focus {
+    border-color: #667eea;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.login-input::placeholder {
+    color: #94a3b8;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.toggle-password:hover {
+    color: #667eea;
+}
+
+/* Login Button */
+.login-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    margin-top: 0.5rem;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+/* Links */
+.login-links {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.link {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+.link-divider {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+/* User Login Button */
+.user-login-btn {
+    width: 100%;
+    padding: 1rem;
+    background: #e2e8f0;
+    color: #475569;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.user-login-btn:hover {
+    background: #cbd5e1;
+    color: #0f172a;
+    transform: translateY(-1px);
+}
+
+/* Loading State */
+.login-btn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.login-btn.loading::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 8px;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Error Message */
+.error-message {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.error-message i {
+    font-size: 1rem;
+}
+
+/* Success Message */
+.success-message {
+    background: #dcfce7;
+    color: #166534;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.success-message i {
+    font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .logo-circle {
+        width: 70px;
+        height: 70px;
+    }
+
+    .logo-circle i {
+        font-size: 2rem;
+    }
+
+    .app-title {
+        font-size: 1.75rem;
+    }
+
+    .login-input {
+        padding: 0.875rem 0.875rem 0.875rem 2.75rem;
+        font-size: 0.9rem;
+    }
+
+    .input-icon {
+        left: 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Form Transition */
+.form-fade-out {
+    animation: fadeOut 0.3s ease;
+}
+
+.form-fade-in {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}

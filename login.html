@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Pragati Tracker</title>
+    <link rel="stylesheet" href="login-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Logo Section -->
+            <div class="logo-section">
+                <div class="logo-circle">
+                    <img src="assets/images/pragati-logo.png" alt="Pragati Engineering College" class="login-logo-image">
+                </div>
+                <h1 class="app-title">Pragati Tracker</h1>
+                <p class="app-subtitle">Bus Management System</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="login-form">
+                <!-- Username Input -->
+                <div class="input-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" class="login-input" placeholder="username" required>
+                </div>
+
+                <!-- Password Input -->
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" class="login-input" placeholder="password" required>
+                    <button type="button" class="toggle-password" id="toggle-password">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="login-btn">Login</button>
+
+                <!-- Links -->
+                <div class="login-links">
+                    <a href="#" class="link forgot-link">Forgot password?</a>
+                    <span class="link-divider">or</span>
+                    <a href="#" class="link signup-link">Sign Up</a>
+                </div>
+
+                <!-- User Login Button -->
+                <button type="button" class="user-login-btn" id="user-login-btn">User Login</button>
+            </form>
+
+            <!-- OTP Login Form (Hidden by default) -->
+            <form id="otp-form" class="login-form" style="display: none;">
+                <!-- Phone Number Input -->
+                <div class="input-group">
+                    <i class="fas fa-mobile-alt input-icon"></i>
+                    <input type="tel" id="phone" class="login-input" placeholder="901625373264" maxlength="12" required>
+                </div>
+
+                <!-- OTP Input -->
+                <div class="input-group">
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="text" id="otp" class="login-input" placeholder="123456" maxlength="6" required>
+                </div>
+
+                <!-- Login with OTP Button -->
+                <button type="submit" class="login-btn">Login with OTP</button>
+
+                <!-- Admin Login Button -->
+                <button type="button" class="user-login-btn" id="admin-login-btn">Admin Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="login-script.js"></script>
+</body>
+
+</html>

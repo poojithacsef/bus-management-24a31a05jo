@@ -1,0 +1,66 @@
+<!-- Live Location Modal - Add this to index.html before closing body tag -->
+<div id="live-location-modal" class="live-location-modal">
+    <div class="live-location-modal-content">
+        <div class="live-location-modal-header">
+            <h3><i class="fas fa-map-marker-alt"></i> Share Live Location</h3>
+            <button class="live-location-modal-close" id="live-location-modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="live-location-modal-body">
+            <div class="live-location-form">
+                <div class="form-group">
+                    <label for="bus-number-select">
+                        <i class="fas fa-bus"></i> Select Your Bus
+                    </label>
+                    <select id="bus-number-select" class="form-select">
+                        <option value="">Choose bus number...</option>
+                        <option value="1">Bus 1 - Rajahmundry</option>
+                        <option value="3">Bus 3 - Kakinada</option>
+                        <option value="4">Bus 4 - Pithapuram</option>
+                        <option value="8">Bus 8 - Peddapuram</option>
+                        <option value="90">Bus 90 - Samalkot</option>
+                        <option value="12">Bus 12 - Amalapuram</option>
+                        <option value="15">Bus 15 - Mandapeta</option>
+                        <option value="22">Bus 22 - Tuni</option>
+                        <option value="25">Bus 25 - Yanam</option>
+                        <option value="30">Bus 30 - Ramachandrapuram</option>
+                        <option value="35">Bus 35 - Kotananduru</option>
+                        <option value="40">Bus 40 - Uppada</option>
+                    </select>
+                </div>
+                
+                <div class="location-status" id="location-status">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Select a bus to start sharing your location</span>
+                </div>
+                
+                <div class="location-info" id="location-info" style="display: none;">
+                    <div class="location-info-item">
+                        <i class="fas fa-map-pin"></i>
+                        <div>
+                            <strong>Current Location</strong>
+                            <span id="current-coords">Waiting for GPS...</span>
+                        </div>
+                    </div>
+                    <div class="location-info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Last Updated</strong>
+                            <span id="last-updated">Never</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="live-location-actions">
+                    <button class="btn-start-tracking" id="btn-start-tracking">
+                        <i class="fas fa-play"></i> Start Live Tracking
+                    </button>
+                    <button class="btn-stop-tracking" id="btn-stop-tracking" style="display: none;">
+                        <i class="fas fa-stop"></i> Stop Tracking
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

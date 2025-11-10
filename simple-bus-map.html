@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Bus Map</title>
+    <style>
+        #map { height: 100vh; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        function initMap() {
+            // College location (correct coordinates)
+            const college = { lat: 17.083056007230727, lng: 82.05445438182011 };
+            
+            // Create map
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 9,
+                center: college
+            });
+
+            // College marker
+            new google.maps.Marker({
+                position: college,
+                map: map,
+                title: 'Pragati Engineering College',
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 15,
+                    fillColor: '#fbbf24',
+                    fillOpacity: 1,
+                    strokeColor: '#fff',
+                    strokeWeight: 3
+                }
+            });
+
+            // Bus locations
+            const buses = [
+                { lat: 17.0005, lng: 81.8040, id: 1, color: '#667eea' },
+                { lat: 16.9891, lng: 82.2711, id: 3, color: '#dc2626' },
+                { lat: 17.1167, lng: 82.2500, id: 4, color: '#16a34a' },
+                { lat: 17.0833, lng: 82.1333, id: 8, color: '#fbbf24' },
+                { lat: 17.0500, lng: 82.1667, id: 90, color: '#8b5cf6' },
+                { lat: 16.5833, lng: 82.0167, id: 12, color: '#f59e0b' },
+                { lat: 16.8667, lng: 81.9333, id: 15, color: '#06b6d4' },
+                { lat: 17.3500, lng: 82.5500, id: 22, color: '#ef4444' },
+                { lat: 16.7333, lng: 82.2167, id: 25, color: '#10b981' },
+                { lat: 16.8333, lng: 82.3000, id: 30, color: '#f97316' },
+                { lat: 16.7833, lng: 81.8833, id: 35, color: '#ec4899' },
+                { lat: 17.0833, lng: 82.3500, id: 40, color: '#14b8a6' }
+            ];
+
+            // Add bus markers and lines
+            buses.forEach(bus => {
+                // Bus marker
+                new google.maps.Marker({
+                    position: { lat: bus.lat, lng: bus.lng },
+                    map: map,
+                    title: `Bus ${bus.id}`,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: bus.color,
+                        fillOpacity: 1,
+                        strokeColor: '#fff',
+                        strokeWeight: 2
+                    },
+                    label: {
+                        text: bus.id.toString(),
+                        color: '#fff',
+                        fontSize: '11px',
+                        fontWeight: 'bold'
+                    }
+                });
+
+                // Route line
+                new google.maps.Polyline({
+                    path: [{ lat: bus.lat, lng: bus.lng }, college],
+                    geodesic: true,
+                    strokeColor: bus.color,
+                    strokeOpacity: 0.6,
+                    strokeWeight: 3,
+                    map: map
+                });
+            });
+        }
+    </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD735BzVTgQt6ois82KJbv0ZyJvWE_jykg&callback=initMap">
+    </script>
+</body>
+</html>
